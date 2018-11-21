@@ -1,6 +1,6 @@
 # Contact Helpdesk
 
-_Developed by DARIAH for [its website's contact form](https://www.dariah.eu/contact/)_
+_Developed by DARIAH for [its website's contact form](https://www.dariah.eu/contact/) (Still pending release)_
 
 _Development is based on the work of [CLARIN-D](https://www.clarin-d.net/) on their own [formular](https://github.com/hzsk/clarind-helpdesk)_
 
