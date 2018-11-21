@@ -1,0 +1,79 @@
+/**
+ * All of the CSS for your public-facing functionality should be
+ * included in this file.
+ */
+
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.contact-helpdesk .contact-helpdesk-form .contact-helpdesk-submit {
+    background-color: #ed6f59;
+    border-radius: 4px;
+    border: none;
+    margin: 0 auto;
+    width: 130px;
+    color: white;
+    padding: 12px 10px;
+    font-weight: bold;
+}
+.contact-helpdesk .contact-helpdesk-form .contact-helpdesk-submit {
+    background-color: #ed6f59;
+    border-radius: 4px;
+    border: none;
+    margin: 0 auto;
+    width: 130px;
+    color: white;
+    padding: 12px 10px;
+    font-weight: bold;
+}
+.contact-helpdesk-form input[type="submit"] {
+    min-width: 120px;
+    font-size: 14px;
+}
+input[type="submit"] {
+    text-transform: uppercase;
+    cursor: pointer;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+    -ms-transition: all 0.2s linear;
+    transition: all 0.2s linear;
+}
+.contact-helpdesk .contact-helpdesk-form input[type="text"], .contact-helpdesk .contact-helpdesk-form input[type="email"], .contact-helpdesk .contact-helpdesk-form input[type="password"], .contact-helpdesk .contact-helpdesk-form textarea {
+    background-color: #f4f6f7;
+    border: 1px solid #d6dde2;
+    border-radius: 3px;
+    margin-top: 2px;
+}
+
+input[type="text"], input[type="email"], input[type="password"], input:not([type="submit"]), .contact-helpdesk select {
+    width: 100%;
+}
+.contact-helpdesk select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+input[type="text"], input[type="email"], input[type="password"], input:not([type="submit"]), textarea, .contact-helpdesk select {
+    font-size: 14px;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    line-height: 20px;
+    color: #999999;
+    padding: 10px 20px 11px 20px;
+
+}
+select {
+    max-width: 100%;
+}
+.contact-helpdesk-error {
+    color: red;
+}
+#contact-helpdesk-response {
+    color: #ed6f59;
+    font-weight: bold;
+    font-size: large;
+}
