@@ -136,9 +136,9 @@ class Contact_Helpdesk_Public {
 		}
 	}
 
-	public function openConnectionToOTRS( $options, $queues, $title, $queueId, $message, $name, $email ) {
+	public function openConnectionToOTRS( $options, $queues, $title, $queueId, $message, $name, $email, $dryrun = false) {
 		$wsdl_file_path = plugin_dir_url( __FILE__ ) . '../wsdl/GenericTicketConnector.wsdl';
-		$soap_client = new SoapClient( $wsdl_file_path );
+		$soap_client = new SoapClient( $wsdl_file_path, array( "location" => $options['otrs_url'] ) );
 		$ticketing_user = $options['ticketing_user'];
 		$ticketing_password = $options['ticketing_password'];
 		$default_owner_id = $options['default_owner_id'];
@@ -150,49 +150,55 @@ class Contact_Helpdesk_Public {
             error_log("We could not set the owner of the ticket, so we use the default one: " . $default_owner_id);
             $owner_id = $default_owner_id;
         }
-		$create = $soap_client->TicketCreate(
-			array( 'UserLogin' => $ticketing_user,
-			       'Password' => $ticketing_password,
-			       'Ticket' => array(
-				      'Title' => $title,
-				      'QueueID' => $queueId,
-				      'TypeID' => 1,
-				      'StateID' => 1,
-				      'PriorityID' => 3,
-				      'OwnerID' => $owner_id,
-				      'ResponsibleID' => $default_responsible_id,
-				      'CustomerUser' => $ticketing_user
-			      ),
-			      'Article' => array(
-				      'From' => $name . ' <' . $email . '>',
-				      'Subject' => $title,
-				      'Body' => $message,
-				      'MimeType' => 'text/plain',
-				      'Charset' => 'utf8',
-			      )
-			)
-		);
-		if ( isset( $create->Error ) || ( isset( $create->TicketID ) && !$create->TicketID ) ) {
-			error_log( "ERROR!!!!!!" );
-			error_log( print_r( $create, true ) );
-			return false;
-		} else {
-			$modify = $soap_client->TicketUpdate(
-				array('UserLogin' => $ticketing_user,
-				      'Password' => $ticketing_password,
-				      'TicketID' => $create->TicketID,
-				      'Ticket' => array(
-					      'CustomerUser' => $email,
-					      'CustomerID' => $email
-				      ),
-				)
-			);
-			if ( isset( $modify->Error ) ) {
-				error_log( "ERROR!!!!!!" );
-				error_log( print_r( $modify, true ) );
-				return false;
-			}
-		}
-		return true;
+        if( ! $dryrun ) {
+            $create = $soap_client->TicketCreate(
+                array(
+                    'UserLogin' => $ticketing_user,
+                    'Password'  => $ticketing_password,
+                    'Ticket'    => array(
+                        'Title'         => $title,
+                        'QueueID'       => $queueId,
+                        'TypeID'        => 1,
+                        'StateID'       => 1,
+                        'PriorityID'    => 3,
+                        'OwnerID'       => $owner_id,
+                        'ResponsibleID' => $default_responsible_id,
+                        'CustomerUser'  => $ticketing_user
+                    ),
+                    'Article'   => array(
+                        'From'     => $name . ' <' . $email . '>',
+                        'Subject'  => $title,
+                        'Body'     => $message,
+                        'MimeType' => 'text/plain',
+                        'Charset'  => 'utf8',
+                    )
+                )
+            );
+            if ( isset( $create->Error ) || ( isset( $create->TicketID ) && ! $create->TicketID ) ) {
+                error_log( "ERROR!!!!!!" );
+                error_log( print_r( $create, true ) );
+
+                return false;
+            } else {
+                $modify = $soap_client->TicketUpdate(
+                    array(
+                        'UserLogin' => $ticketing_user,
+                        'Password'  => $ticketing_password,
+                        'TicketID'  => $create->TicketID,
+                        'Ticket'    => array(
+                            'CustomerUser' => $email,
+                            'CustomerID'   => $email
+                        ),
+                    )
+                );
+                if ( isset( $modify->Error ) ) {
+                    error_log( "ERROR!!!!!!" );
+                    error_log( print_r( $modify, true ) );
+
+                    return false;
+                }
+            }
+        }
+        return true;
 	}
 }

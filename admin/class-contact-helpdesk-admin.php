@@ -147,6 +147,7 @@ class Contact_Helpdesk_Admin {
 		$valid = array();
 		$valid['contact_helpdesk_recaptcha_site_key'] = sanitize_text_field( $input['contact_helpdesk_recaptcha_site_key'] );
 		$valid['contact_helpdesk_recaptcha_secret_key'] = sanitize_text_field( $input['contact_helpdesk_recaptcha_secret_key'] );
+		$valid['otrs_url'] = sanitize_text_field( $input['otrs_url'] );
 		$valid['ticketing_user'] = sanitize_text_field( $input['ticketing_user'] );
 		$valid['ticketing_password'] = sanitize_text_field( $input['ticketing_password'] );
 		$valid['default_owner_id'] = sanitize_text_field( $input['default_owner_id'] );
