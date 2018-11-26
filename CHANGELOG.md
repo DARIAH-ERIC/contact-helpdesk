@@ -6,4 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 ### Added
+- Uninstall deletes the DB tables of the plugin
+- Added admin option to set the OTRS URL, the OTRS server is not hardcoded anymore
 - First public version of the plugin
