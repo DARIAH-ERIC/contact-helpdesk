@@ -29,3 +29,26 @@
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
+
+/**
+ * Delete options from option table
+ *
+ */
+$keys = array(
+    'contact-helpdesk',
+    'contact-helpdesk-queues'
+);
+
+global $wpdb;
+foreach ( $keys as $key ) {
+    $wpdb->query(
+        $wpdb->prepare(
+            "
+			 DELETE FROM $wpdb->options
+			 WHERE option_name = %s
+			",
+            $key
+        )
+    );
+}
+
