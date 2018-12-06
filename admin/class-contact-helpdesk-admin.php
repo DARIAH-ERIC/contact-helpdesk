@@ -160,9 +160,6 @@ class Contact_Helpdesk_Admin {
 	 * @since    1.0.0
 	 */
 	public function validate_queues( $input ) {
-		foreach ( $input as $key => $value ) {
-			error_log($key . " -> " . $value);
-		}
 		$valid = array();
 		$alreadyProcessed = array();
 		foreach ( $input as $key => $value ) {
