@@ -124,9 +124,13 @@ class Contact_Helpdesk_Public {
 				return new WP_Error( 'error', esc_html__( 'Please fill all mandatory fields', 'my-text-domain'
 				), array( 'status' => 400 ) );
 			}
-			if( $this->openConnectionToOTRS( $options, $queues, $_POST['your-title'], $_POST['your-subject'], $_POST['your-message'],
+			if( $ticketId = $this->openConnectionToOTRS( $options, $queues, $_POST['your-title'], $_POST['your-subject'], $_POST['your-message'],
 				$_POST['your-name'], $_POST['your-email'] ) ) {
-				return new WP_REST_Response( array("success" => "true" ), 200 );
+                $headers = array( //todo: Change email address for a DARIAH one
+                    'Reply-To: CLARIN-D Helpdesk <support@clarin-d.de>',
+                );
+                wp_mail( $_POST['your-email'], "Ticket#".$ticketId, "We have received your request and will take care of it as soon as possible.", $headers );
+				return new WP_REST_Response( array( "ticketId" => $ticketId ), 200 );
 			} else {
 				return new WP_Error( 'unknown_error', esc_html__( 'There was an unknown error', 'my-text-domain'
 				), array( 'status' => 400 ) );
@@ -198,6 +202,7 @@ class Contact_Helpdesk_Public {
                     return false;
                 }
             }
+            return $create->TicketID;
         }
         return true;
 	}

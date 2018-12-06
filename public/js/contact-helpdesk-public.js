@@ -22,10 +22,11 @@ jQuery(document).ready(function($) {
             url: url,
             data: form.serialize(),
             success: function (data) {
-                $("#contact-helpdesk-response").html("Thank you for your message, it was successfully processed and" +
-                    " we will contact you shortly.");
-                $(form).html("");
                 var contactHelpdeskResponse = $("#contact-helpdesk-response");
+                $(contactHelpdeskResponse).html("Thank you for your message, it was successfully processed and" +
+                    " we will contact you shortly.<br/>Your ticket number is #" + data.ticketId + " and you will" +
+                    " soon receive a mail about your ticket.");
+                $(form).html("");
                 $("html,body").animate({scrollTop: contactHelpdeskResponse.offset().top - 500});
             },
             error: function(data) {
