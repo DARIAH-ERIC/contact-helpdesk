@@ -202,7 +202,7 @@ class Contact_Helpdesk_Public {
                     return false;
                 }
             }
-            return $create->TicketID;
+            return $create->TicketNumber;
         }
         return true;
 	}
