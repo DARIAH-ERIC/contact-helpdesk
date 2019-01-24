@@ -166,16 +166,12 @@ class Contact_Helpdesk {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-//		$this->loader->add_action( 'comment_form', $plugin_public, 'display_reCaptcha' );
-//		$this->loader->add_filter( 'preprocess_comment', $plugin_public, 'contact_helpdesk_verify_captcha' );
-//		$this->loader->add_action( 'init', $plugin_public, 'access_contact_helpdesk_verify_captcha' );
 		$this->loader->add_action( 'rest_api_init', $plugin_public, 'create_rest_route' );
 	}
 
 	private function define_shortcodes() {
 		$plugin_public = new Contact_Helpdesk_Public( $this->get_plugin_name(), $this->get_version() );
-
-		$this->loader->add_shortcode( 'contact-helpdesk', $plugin_public, 'display_reCaptcha' );
+		$this->loader->add_shortcode( 'contact-helpdesk', $plugin_public, 'display_helpdesk' );
 	}
 
 	/**

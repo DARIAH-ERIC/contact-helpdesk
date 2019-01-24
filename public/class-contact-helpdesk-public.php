@@ -93,14 +93,22 @@ class Contact_Helpdesk_Public {
 		wp_enqueue_script( "recaptcha" );
 	}
 
-	/**
-	 * Render the reCaptcha.
-	 *
-	 * @since    1.0.0
-	 */
-	public function display_reCaptcha() {
-		include_once( 'partials/contact-helpdesk-public-display.php' );
-	}
+    /**
+     * Render the form page (the actual Helpdesk contact form).
+     * If $atts is empty, print the whole page, else print the form for a specific subject.
+     *
+     * @since    1.0.0
+     *
+     * @param $atts If the shortcode has a page identifier, we can use it to display a special helpdesk
+     */
+    public function display_helpdesk( $atts ) {
+        include_once( 'partials/contact-helpdesk-public-display.php' );
+        if( is_array( $atts ) ) {
+            print_helpdesk_form( $this->plugin_name, $atts['page'] );
+        } else {
+            print_helpdesk_form( $this->plugin_name );
+        }
+    }
 
 	public function create_rest_route() {
 		register_rest_route( 'contact_helpdesk/v1', 'verify_data',
@@ -128,8 +136,12 @@ class Contact_Helpdesk_Public {
 				$_POST['your-name'], $_POST['your-email'] ) ) {
                 $headers = array( //todo: Change email address for a DARIAH one
                     'Reply-To: CLARIN-D Helpdesk <support@clarin-d.de>',
+                    'Content-Type: text/html; charset=UTF-8'
                 );
-                wp_mail( $_POST['your-email'], "Ticket#".$ticketId, "We have received your request and will take care of it as soon as possible.", $headers );
+                wp_mail( $_POST['your-email'], "Ticket#".$ticketId, "Hello,<br/>Thank you for contacting us via the DARIAH Helpdesk! By selecting a category for your question, you have 
+already forwarded your request to the most suitable person. We will get back to you as soon as 
+possible.<br/><br/>Your DARIAH-Helpdesk team<br/>--<br/>DARIAH ERIC<br/>c/o TGIR Huma-Num TGIR HUMA-NUM CNRS UMS 
+3598<br/>54, Boulevard Raspail<br/>75006 Paris<br/>France<br/>Email: info@dariah.eu - Web: https://www.dariah.eu/<br/>--", $headers );
 				return new WP_REST_Response( array( "ticketId" => $ticketId ), 200 );
 			} else {
 				return new WP_Error( 'unknown_error', esc_html__( 'There was an unknown error', 'my-text-domain'
