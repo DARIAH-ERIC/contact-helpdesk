@@ -27,15 +27,18 @@ function print_helpdesk_form( $plugin_name, $queue_id = false ) {
         <p><label> Your Email <span class="required">*</span><br>
             <span class="contact-helpdesk-form-control-wrap your-email"><input name="your-email" id="your-email" value=""
                                                                                size="40" class="contact-helpdesk-form-control contact-helpdesk-text contact-helpdesk-email contact-helpdesk-validates-as-required contact-helpdesk-validates-as-email" aria-required="true" aria-invalid="false" type="email"></span> </label>
-            <span id="your-email-error" class="contact-helpdesk-form-control-wrap contact-helpdesk-error"></span></p>';
+            <span id="your-email-error" class="contact-helpdesk-form-control-wrap contact-helpdesk-error"></span></p>
+            <p><label> Subject <span class="required">*</span><br><span class="contact-helpdesk-form-control-wrap your-subject">';
     if ( ! $queues ) {
-        $text .= '<p><label> Subject <span class="required">*</span><br>
-            <span class="contact-helpdesk-form-control-wrap your-subject"><span id="your-message-subject-error" class="contact-helpdesk-form-control-wrap contact-helpdesk-error">
+        $text .= '<span id="your-message-subject-error" class="contact-helpdesk-form-control-wrap contact-helpdesk-error">
                         Error: you have not created any queues in the plugin settings
                     </span>';
     } else {
-        if( $queue_id ) {
+        if( $queue_id > 0 && array_key_exists( $queue_id, $queues ) ) {
             $text .= '<input type="hidden" name="your-subject" value="' . $queue_id . '" />';
+            $text .= '<span id="your-message-subject-selected" class="contact-helpdesk-form-control-wrap">You have selected the subject \'';
+            $text .= json_decode( $queues[ $queue_id ] )->value;
+            $text .= '\'</span>';
         } else {
             //Sort by alphabetical order
             foreach ( $queues as $key => $value ) {
@@ -44,12 +47,11 @@ function print_helpdesk_form( $plugin_name, $queue_id = false ) {
             }
             array_multisort( $title, SORT_ASC, $queues );
 
-            $text .= '<p><label> Subject <span class="required">*</span><br>
-            <span class="contact-helpdesk-form-control-wrap your-subject"><select name="your-subject" id="your-subject" class="contact-helpdesk-form-control contact-helpdesk-select
+            $text .= '<select name="your-subject" id="your-subject" class="contact-helpdesk-form-control contact-helpdesk-select
                 contact-helpdesk-validates-as-required" aria-required="true" aria-invalid="false">';
             foreach ( $queues as $key => $value ) {
                 $json_obj = json_decode( $value );
-                $text     .= '<option value="<?php echo $key; ?>"';
+                $text     .= '<option value="' . $json_obj->identifier . '"';
                 if ( isset( $json_obj->isSelected ) && $json_obj->isSelected ) {
                     $text .= ' selected="selected"';
                 }

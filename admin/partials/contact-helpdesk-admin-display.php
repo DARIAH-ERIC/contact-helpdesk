@@ -30,9 +30,6 @@
 		$ticketing_password = isset( $options['ticketing_password'] ) ? $options['ticketing_password'] : "";
 		$default_owner_id = isset( $options['default_owner_id'] ) ? $options['default_owner_id'] : "";
 		$default_responsible_id = isset( $options['default_responsible_id'] ) ? $options['default_responsible_id'] : "";
-//		$default_queue_id = isset( $options['default_queue_id'] ) ? $options['default_queue_id'] : "";
-
-		$queues = get_option( $this->plugin_name . "-queues" );
 
 		settings_fields( $this->plugin_name );
 		do_settings_sections( $this->plugin_name );

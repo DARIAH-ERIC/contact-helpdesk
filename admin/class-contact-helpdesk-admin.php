@@ -169,7 +169,8 @@ class Contact_Helpdesk_Admin {
 					$identifier = explode( "-", $key, 2 )[0];
 					if ( ! in_array( $identifier, $alreadyProcessed ) ) {
 						$arrayInput           = array(
-							"value"       => sanitize_text_field( $input[ $identifier . '-value' ] ),
+							"identifier"  => sanitize_text_field( $identifier ),
+                            "value"       => sanitize_text_field( $input[ $identifier . '-value' ] ),
 							"responsible" => $input[ $identifier . '-responsible' ],
 							"isSelected"  => isset( $input[ $identifier . '-isSelected' ] ) ? $input[ $identifier . '-isSelected' ] : false
 						);
@@ -184,6 +185,7 @@ class Contact_Helpdesk_Admin {
 				//We only will work with the key, no need to iterate through the others
 				if ( $key == "new-queue-key" ) {
 					$arrayInput = array(
+						"identifier"  => sanitize_text_field( $input['new-queue-key'] ),
 						"value"       => sanitize_text_field( $input['new-queue-value'] ),
 						"responsible" => $input['new-queue-responsible']
 					);
