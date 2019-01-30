@@ -30,6 +30,7 @@
 		$ticketing_password = isset( $options['ticketing_password'] ) ? $options['ticketing_password'] : "";
 		$default_owner_id = isset( $options['default_owner_id'] ) ? $options['default_owner_id'] : "";
 		$default_responsible_id = isset( $options['default_responsible_id'] ) ? $options['default_responsible_id'] : "";
+		$email_answer = isset( $options['email_answer'] ) ? $options['email_answer'] : "";
 
 		settings_fields( $this->plugin_name );
 		do_settings_sections( $this->plugin_name );
@@ -117,6 +118,18 @@
                     <input name="<?php echo $this->plugin_name;?>[default_responsible_id]" id="<?php
 		            echo $this->plugin_name;?>-default-responsible-id" value="<?php echo
 		            $default_responsible_id;?>" class="regular-text" type="text">
+                </td>
+            </tr>
+            <!-- Contact Helpdesk Answer by mail to user -->
+            <tr>
+                <th scope="row">
+                    <label for="<?php echo $this->plugin_name;?>-email-answer"><?php _e('Email answer to user (in HTML)',
+                            $this->plugin_name);?></label>
+                </th>
+                <td>
+                    <textarea name="<?php echo $this->plugin_name;?>[email_answer]" id="<?php
+                    echo $this->plugin_name;?>-email-answer" class="regular-text"><?php echo
+                        $email_answer;?></textarea>
                 </td>
             </tr>
             </tbody>

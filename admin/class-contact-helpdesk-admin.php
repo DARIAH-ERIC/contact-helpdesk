@@ -152,6 +152,7 @@ class Contact_Helpdesk_Admin {
 		$valid['ticketing_password'] = sanitize_text_field( $input['ticketing_password'] );
 		$valid['default_owner_id'] = sanitize_text_field( $input['default_owner_id'] );
 		$valid['default_responsible_id'] = sanitize_text_field( $input['default_responsible_id'] );
+		$valid['email_answer'] = $input['email_answer'];
 		return $valid;
 	}
 	/**

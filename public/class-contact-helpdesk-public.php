@@ -138,10 +138,7 @@ class Contact_Helpdesk_Public {
                     'Reply-To: CLARIN-D Helpdesk <support@clarin-d.de>',
                     'Content-Type: text/html; charset=UTF-8'
                 );
-                wp_mail( $_POST['your-email'], "Ticket#".$ticketId, "Hello,<br/>Thank you for contacting us via the DARIAH Helpdesk! By selecting a category for your question, you have 
-already forwarded your request to the most suitable person. We will get back to you as soon as 
-possible.<br/><br/>Your DARIAH-Helpdesk team<br/>--<br/>DARIAH ERIC<br/>c/o TGIR Huma-Num TGIR HUMA-NUM CNRS UMS 
-3598<br/>54, Boulevard Raspail<br/>75006 Paris<br/>France<br/>Email: info@dariah.eu - Web: https://www.dariah.eu/<br/>--", $headers );
+                wp_mail( $_POST['your-email'], "Ticket#".$ticketId, $options['email_answer'], $headers );
 				return new WP_REST_Response( array( "ticketId" => $ticketId ), 200 );
 			} else {
 				return new WP_Error( 'unknown_error', esc_html__( 'There was an unknown error', 'my-text-domain'
