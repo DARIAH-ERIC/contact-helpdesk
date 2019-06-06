@@ -33,7 +33,7 @@ jQuery(document).ready(function($) {
             error: function(data) {
                 $(contactHelpdeskResponse).html("");
                 $("#contact-helpdesk-send").val("Send");
-                $("#contact-helpdesk-send").removeAttr('disabled');
+                $("#contact-helpdesk-send").prop('disabled', false);
                 console.log(data);
                 console.log(data.responseJSON.code);
                 if(data.responseJSON.code === "rest_forbidden") {
@@ -56,7 +56,7 @@ jQuery(document).ready(function($) {
             },
             beforeSend: function() {
                 $("#contact-helpdesk-send").val("Sending...");
-                $("#contact-helpdesk-send").attr('disabled','disabled');
+                $("#contact-helpdesk-send").prop('disabled', true);
             }
         });
     });
