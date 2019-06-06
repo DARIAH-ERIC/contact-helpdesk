@@ -134,8 +134,8 @@ class Contact_Helpdesk_Public {
 			}
 			if( $ticketId = $this->openConnectionToOTRS( $options, $queues, $_POST['your-title'], $_POST['your-subject'], $_POST['your-message'],
 				$_POST['your-name'], $_POST['your-email'] ) ) {
-                $headers = array( //todo: Change email address for a DARIAH one
-                    'Reply-To: CLARIN-D Helpdesk <support@clarin-d.de>',
+                $headers = array(
+                    'Reply-To: DARIAH-EU Helpdesk <helpdesk@dariah.eu>',
                     'Content-Type: text/html; charset=UTF-8'
                 );
                 wp_mail( $_POST['your-email'], "Ticket#".$ticketId, $options['email_answer'], $headers );
@@ -151,7 +151,6 @@ class Contact_Helpdesk_Public {
 
 	public function openConnectionToOTRS( $options, $queues, $title, $queueId, $message, $name, $email, $dryrun = false) {
 		$wsdl_file_path = plugin_dir_url( __FILE__ ) . '../wsdl/GenericTicketConnector.wsdl';
-		$soap_client = new SoapClient( $wsdl_file_path, array( "location" => $options['otrs_url'] ) );
 		$ticketing_user = $options['ticketing_user'];
 		$ticketing_password = $options['ticketing_password'];
 		$default_owner_id = $options['default_owner_id'];
@@ -164,54 +163,66 @@ class Contact_Helpdesk_Public {
             $owner_id = $default_owner_id;
         }
         if( ! $dryrun ) {
-            $create = $soap_client->TicketCreate(
-                array(
-                    'UserLogin' => $ticketing_user,
-                    'Password'  => $ticketing_password,
-                    'Ticket'    => array(
-                        'Title'         => $title,
-                        'QueueID'       => $queueId,
-                        'TypeID'        => 1,
-                        'StateID'       => 1,
-                        'PriorityID'    => 3,
-                        'OwnerID'       => $owner_id,
-                        'ResponsibleID' => $default_responsible_id,
-                        'CustomerUser'  => $ticketing_user
-                    ),
-                    'Article'   => array(
-                        'From'     => $name . ' <' . $email . '>',
-                        'Subject'  => $title,
-                        'Body'     => $message,
-                        'MimeType' => 'text/plain',
-                        'Charset'  => 'utf8',
-                    )
-                )
-            );
-            if ( isset( $create->Error ) || ( isset( $create->TicketID ) && ! $create->TicketID ) ) {
-                error_log( "ERROR!!!!!!" );
-                error_log( print_r( $create, true ) );
-
-                return false;
-            } else {
-                $modify = $soap_client->TicketUpdate(
+            try {
+                $soap_client = new SoapClient( $wsdl_file_path, array( "location" => $options['otrs_url'] ) );
+                $create = $soap_client->TicketCreate(
                     array(
                         'UserLogin' => $ticketing_user,
                         'Password'  => $ticketing_password,
-                        'TicketID'  => $create->TicketID,
                         'Ticket'    => array(
-                            'CustomerUser' => $email,
-                            'CustomerID'   => $email
+                            'Title'         => $title,
+                            'QueueID'       => $queueId,
+                            'TypeID'        => 1,
+                            'StateID'       => 1,
+                            'PriorityID'    => 3,
+                            'OwnerID'       => $owner_id,
+                            'ResponsibleID' => $default_responsible_id,
+                            'CustomerUser'  => $ticketing_user
                         ),
+                        'Article'   => array(
+                            'From'     => $name . ' <' . $email . '>',
+                            'Subject'  => $title,
+                            'Body'     => $message,
+                            'MimeType' => 'text/plain',
+                            'Charset'  => 'utf8',
+                        )
                     )
                 );
-                if ( isset( $modify->Error ) ) {
+                if ( isset( $create->Error ) || ( isset( $create->TicketID ) && ! $create->TicketID ) ) {
                     error_log( "ERROR!!!!!!" );
-                    error_log( print_r( $modify, true ) );
+                    error_log( print_r( $create, true ) );
 
                     return false;
+                } else {
+                    $modify = $soap_client->TicketUpdate(
+                        array(
+                            'UserLogin' => $ticketing_user,
+                            'Password'  => $ticketing_password,
+                            'TicketID'  => $create->TicketID,
+                            'Ticket'    => array(
+                                'CustomerUser' => $email,
+                                'CustomerID'   => $email
+                            ),
+                        )
+                    );
+                    if ( isset( $modify->Error ) ) {
+                        error_log( "ERROR!!!!!!" );
+                        error_log( print_r( $modify, true ) );
+
+                        return false;
+                    }
                 }
+                return $create->TicketNumber;
+            } catch (\SoapFault $fault) {
+                error_log("We could not create the ticket...");
+                error_log("Title: " . $title);
+                error_log("Message: " . $message);
+                error_log("Name - Email: " . $name . " - " . $email);
+                error_log($fault);
+                wp_mail( $ticketing_user, "Error in Helpdesk - new ticket", "Title: " . $title . "\n" .
+                        "Message: " . $message . "\n" . "Name - Email: " . $name . " - " . $email);
+                return false;
             }
-            return $create->TicketNumber;
         }
         return true;
 	}

@@ -14,7 +14,9 @@ function provideErrorMsg(inputId) {
 
 jQuery(document).ready(function($) {
     $("#contact-helpdesk-form").submit(function (e) {
+        e.preventDefault();
         var form = $(this);
+        var contactHelpdeskResponse = $("#contact-helpdesk-response");
         var url = form.attr('action');
 
         $.ajax({
@@ -22,7 +24,6 @@ jQuery(document).ready(function($) {
             url: url,
             data: form.serialize(),
             success: function (data) {
-                var contactHelpdeskResponse = $("#contact-helpdesk-response");
                 $(contactHelpdeskResponse).html("Thank you for your message, it was successfully processed and" +
                     " we will contact you shortly.<br/>Your ticket number is #" + data.ticketId + " and you will" +
                     " soon receive a mail about your ticket.");
@@ -30,6 +31,8 @@ jQuery(document).ready(function($) {
                 $("html,body").animate({scrollTop: contactHelpdeskResponse.offset().top - 500});
             },
             error: function(data) {
+                $(contactHelpdeskResponse).html("");
+                jQuery("#contact-helpdesk-send").val("Send");
                 console.log(data);
                 console.log(data.responseJSON.code);
                 if(data.responseJSON.code === "rest_forbidden") {
@@ -38,20 +41,22 @@ jQuery(document).ready(function($) {
                 } else if(data.responseJSON.code === "error") {
                     provideErrorMsg("#your-name");
                     provideErrorMsg("#your-email");
+                    provideErrorMsg("#your-subject");
                     provideErrorMsg("#your-title");
                     provideErrorMsg("#your-message");
                 } else if(data.responseJSON.code === "unknown_error") {
-                    $("#contact-helpdesk-response").html(data.responseJSON.message);
+                    $(contactHelpdeskResponse).html(data.responseJSON.message);
                     $(form).html("");
                 } else {
-                    $("#contact-helpdesk-response").html("Error... (Please contact technical-support@dariah.eu)");
+                    $(contactHelpdeskResponse).html("Error... (Please contact technical-support@dariah.eu)");
                     $(form).html("");
                 }
-                var contactHelpdeskResponse = $("#contact-helpdesk-response");
                 $("html,body").animate({scrollTop: contactHelpdeskResponse.offset().top - 500});
+            },
+            beforeSend: function() {
+                $("#contact-helpdesk-send").val("Sending...");
             }
         });
-        e.preventDefault();
     });
 
     $("#your-name").keyup(function ($event) {
