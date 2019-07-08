@@ -193,7 +193,7 @@ class Contact_Helpdesk_Public {
                     error_log( print_r( $create, true ) );
 
                     return false;
-                } else {
+                } else if($create->TicketID) {
                     $modify = $soap_client->TicketUpdate(
                         array(
                             'UserLogin' => $ticketing_user,
@@ -211,8 +211,10 @@ class Contact_Helpdesk_Public {
 
                         return false;
                     }
+                } else {
+                    throw new \Exception( "Error when creating ticket..." );
                 }
-                return $create->TicketNumber;
+                return $create->TicketNumber; //problem
             } catch (\SoapFault $fault) {
                 error_log("We could not create the ticket...");
                 error_log("Title: " . $title);
@@ -221,6 +223,15 @@ class Contact_Helpdesk_Public {
                 error_log($fault);
                 wp_mail( $ticketing_user, "Error in Helpdesk - new ticket", "Title: " . $title . "\n" .
                         "Message: " . $message . "\n" . "Name - Email: " . $name . " - " . $email);
+                return false;
+            } catch (\Exception $exception) {
+                error_log("We could not create the ticket...");
+                error_log("Title: " . $title);
+                error_log("Message: " . $message);
+                error_log("Name - Email: " . $name . " - " . $email);
+                error_log($exception);
+                wp_mail( $ticketing_user, "Error in Helpdesk - new ticket", "Title: " . $title . "\n" .
+                                                                            "Message: " . $message . "\n" . "Name - Email: " . $name . " - " . $email);
                 return false;
             }
         }
