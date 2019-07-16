@@ -17,7 +17,6 @@ unfamiliar with OTRS.
 ## Options
 - reCaptcha site key (use https://www.google.com/recaptcha/admin)
 - reCaptcha secret key (as above)
-- OTRS instance URL (e.g. http://www.example.com/otrs/nph-genericinterface.pl/Webservice/GenericTicketConnector)
 - Ticketing User (the username of the user creating the ticket on the OTRS system)
 - Ticketing User Password (its password)
 - Default OTRS Ticket Owner ID (Who would be the owner by default, please use the ID of such user, the ID can be 

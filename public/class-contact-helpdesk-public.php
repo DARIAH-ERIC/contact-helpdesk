@@ -164,7 +164,7 @@ class Contact_Helpdesk_Public {
         }
         if( ! $dryrun ) {
             try {
-                $soap_client = new SoapClient( $wsdl_file_path, array( "location" => $options['otrs_url'] ) );
+                $soap_client = new SoapClient( $wsdl_file_path );
                 $create = $soap_client->TicketCreate(
                     array(
                         'UserLogin' => $ticketing_user,
@@ -193,7 +193,7 @@ class Contact_Helpdesk_Public {
                     error_log( print_r( $create, true ) );
 
                     return false;
-                } else if($create->TicketID) {
+                } else if( isset( $create->TicketID ) ) {
                     $modify = $soap_client->TicketUpdate(
                         array(
                             'UserLogin' => $ticketing_user,

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <wsdl:definitions
     name="GenericTicketConnector"
-    targetNamespace="otrs_tns"
+    targetNamespace="http://support.clarin-d.de/otrs/nph-genericinterface.pl/Webservice/GenericTicketConnector/"
     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-    xmlns:tns="otrs_tns">
+    xmlns:tns="http://support.clarin-d.de/otrs/nph-genericinterface.pl/Webservice/GenericTicketConnector/">
     <wsdl:documentation></wsdl:documentation>
     <wsdl:types>
         <xsd:schema
             elementFormDefault="qualified"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            targetNamespace="otrs_tns">
+            targetNamespace="http://support.clarin-d.de/otrs/nph-genericinterface.pl/Webservice/GenericTicketConnector/">
             <xsd:complexType name="TicketCreate"></xsd:complexType>
             <xsd:complexType name="OTRS_TicketCreate">
                 <xsd:sequence>
@@ -2108,7 +2108,8 @@
             style="document"
             transport="http://schemas.xmlsoap.org/soap/http" />
         <wsdl:operation name="TicketCreate">
-            <soap:operation soapAction="/TicketCreate" />
+            <soap:operation
+                soapAction="http://support.clarin-d.de/otrs/nph-genericinterface.pl/Webservice/GenericTicketConnector/TicketCreate" />
             <wsdl:input>
                 <soap:body use="literal" />
             </wsdl:input>
@@ -2117,7 +2118,8 @@
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="TicketUpdate">
-            <soap:operation soapAction="/TicketUpdate" />
+            <soap:operation
+                soapAction="http://support.clarin-d.de/otrs/nph-genericinterface.pl/Webservice/GenericTicketConnector/TicketUpdate" />
             <wsdl:input>
                 <soap:body use="literal" />
             </wsdl:input>
@@ -2126,7 +2128,8 @@
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="TicketGet">
-            <soap:operation soapAction="/TicketGet" />
+            <soap:operation
+                soapAction="http://support.clarin-d.de/otrs/nph-genericinterface.pl/Webservice/GenericTicketConnector/TicketGet" />
             <wsdl:input>
                 <soap:body use="literal" />
             </wsdl:input>
@@ -2135,7 +2138,8 @@
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="TicketSearch">
-            <soap:operation soapAction="/TicketSearch" />
+            <soap:operation
+                soapAction="http://support.clarin-d.de/otrs/nph-genericinterface.pl/Webservice/GenericTicketConnector/TicketSearch" />
             <wsdl:input>
                 <soap:body use="literal" />
             </wsdl:input>
@@ -2144,7 +2148,8 @@
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="SessionCreate">
-            <soap:operation soapAction="/SessionCreate" />
+            <soap:operation
+                soapAction="http://support.clarin-d.de/otrs/nph-genericinterface.pl/Webservice/GenericTicketConnector/SessionCreate" />
             <wsdl:input>
                 <soap:body use="literal" />
             </wsdl:input>
@@ -2156,6 +2161,7 @@
 
     <wsdl:service name="GenericTicketConnector">
         <wsdl:port name="GenericTicketConnector_endPoint" binding="tns:GenericTicketConnector_Service">
-            <soap:address location="" />
+            <soap:address location="http://support.clarin-d.de/otrs/nph-genericinterface.pl/Webservice/GenericTicketConnector" />
         </wsdl:port>
     </wsdl:service></wsdl:definitions>
+
