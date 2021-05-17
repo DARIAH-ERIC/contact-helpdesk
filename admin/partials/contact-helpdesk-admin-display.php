@@ -25,7 +25,6 @@
 		$options = get_option( $this->plugin_name );
 		$contact_helpdesk_recaptcha_site_key = isset( $options['contact_helpdesk_recaptcha_site_key'] ) ? $options['contact_helpdesk_recaptcha_site_key'] : "";
 		$contact_helpdesk_recaptcha_secret_key = isset( $options['contact_helpdesk_recaptcha_secret_key'] ) ? $options['contact_helpdesk_recaptcha_secret_key'] : "";
-		$otrs_url = isset( $options['otrs_url'] ) ? $options['otrs_url'] : "";
 		$ticketing_user = isset( $options['ticketing_user'] ) ? $options['ticketing_user'] : "";
 		$ticketing_password = isset( $options['ticketing_password'] ) ? $options['ticketing_password'] : "";
 		$default_owner_id = isset( $options['default_owner_id'] ) ? $options['default_owner_id'] : "";
@@ -58,18 +57,6 @@
                     <input name="<?php echo $this->plugin_name;?>[contact_helpdesk_recaptcha_secret_key]" id="<?php
                     echo $this->plugin_name;?>-contact-helpdesk-recaptcha-secret-key" value="<?php echo
                     $contact_helpdesk_recaptcha_secret_key;?>" class="regular-text" type="password">
-                </td>
-            </tr>
-            <!-- OTRS URL -->
-            <tr>
-                <th scope="row">
-                    <label for="<?php echo $this->plugin_name;?>-otrs_url"><?php _e('OTRS instance URL',
-                            $this->plugin_name);?></label>
-                </th>
-                <td>
-                    <input name="<?php echo $this->plugin_name;?>[otrs_url]" id="<?php
-		            echo $this->plugin_name;?>-otrs_url" value="<?php echo
-		            $otrs_url;?>" class="regular-text" placeholder="e.g. http://www.xxxxxxx.com/otrs/nph-genericinterface.pl/Webservice/GenericTicketConnector" type="text">
                 </td>
             </tr>
             <!-- Contact Helpdesk Ticketing User -->
